@@ -41,7 +41,7 @@ const LOCAL_HOSTS = new Set([
  * exactly what `backend/.env` contains) are accepted by stripping the dialect
  * suffix, so one `DATABASE_URL` works for both runtimes.
  */
-function normaliseConnectionString(raw: string): { connectionString: string; ssl: boolean } {
+function normaliseConnectionString(raw: string): { connectionString: string; ssl: boolean | { rejectUnauthorized: boolean } } {
   const trimmed = raw.trim();
   const withoutDialect = trimmed.replace(/^(postgres(?:ql)?)\+\w+:\/\//i, "$1://");
 
@@ -68,7 +68,16 @@ function normaliseConnectionString(raw: string): { connectionString: string; ssl
     // Unparseable URL: let node-postgres report the detailed error.
   }
 
-  const ssl = sslMode === "disable" ? false : sslMode ? true : !LOCAL_HOSTS.has(host);
+  // Supabase / managed Postgres: require TLS but don't verify CA (self-signed
+  // pooler certs on serverless runtimes). Local hosts stay plain TCP.
+  // `sslmode=disable` or a local host => false.
+  // Anything else (Supabase pooler, Neon, etc.) => { rejectUnauthorized: false }.
+  let ssl: boolean | { rejectUnauthorized: boolean };
+  if (sslMode === "disable" || LOCAL_HOSTS.has(host)) {
+    ssl = false;
+  } else {
+    ssl = { rejectUnauthorized: false };
+  }
   return { connectionString: url ? url.toString() : withoutDialect, ssl };
 }
 
