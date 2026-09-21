@@ -1,0 +1,22 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9
+pydantic==2.9.2
+pydantic-settings==2.5.2
+python-multipart==0.0.9
+groq==0.11.0
+httpx==0.27.2
+chromadb==0.5.5
+pypdf==4.3.1
+reportlab==4.2.2
+python-dotenv==1.0.1
+tenacity==9.0.0
+passlib[bcrypt]==1.7.4
+# NOTE: bcrypt is pinned to 4.x on purpose. passlib 1.7.4's bcrypt backend
+# runs an internal self-test that relies on >72-byte passwords being silently
+# truncated; bcrypt 5.0 removed that and raises ValueError instead, which makes
+# the backend fail to initialise ("error reading bcrypt version"). 4.0.1 also
+# still ships the __about__ attribute passlib probes for the version.
+bcrypt==4.0.1
+python-jose[cryptography]==3.5.0

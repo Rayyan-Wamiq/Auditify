@@ -1,0 +1,67 @@
+# =============================================================================
+# Auditify - .gitignore
+# Secrets, local runtime state and build artefacts must never reach the repo.
+# Real credentials live only in local .env files (see the *.env.example files).
+# =============================================================================
+
+# --- Secrets / environment files --------------------------------------------
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
+backend/.env
+frontend/.env.local
+*.env
+!**/.env.example
+!**/*.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# --- Backend (Python / FastAPI) ---------------------------------------------
+backend/.venv/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Local data stores / generated artefacts ---------------------------------
+chroma_store/
+backend/chroma_store/
+*.sqlite3
+*.db
+backend/_pdf_test_*
+
+# --- Local runtime logs (may contain request/traceback data) -----------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Frontend (Next.js / Node) ----------------------------------------------
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+frontend/out/
+next-env.d.ts
+*.tsbuildinfo
+.turbo/
+.vercel/
+
+# --- Editors / OS ------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+Desktop.ini

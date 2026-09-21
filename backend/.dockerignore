@@ -1,0 +1,44 @@
+# -----------------------------------------------------------------------------
+# Auditify backend - Docker build context exclusions
+# Docker does NOT read .gitignore, so local secrets must be listed here too;
+# otherwise `COPY . .` in the Dockerfile would bake them into the image.
+# -----------------------------------------------------------------------------
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Virtualenv and caches
+.venv/
+venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local vector store and database files
+chroma_store/
+*.sqlite3
+*.db
+
+# Local runtime logs and scratch artefacts
+*.log
+_pdf_test_*
+
+# VCS / editors / OS
+.git/
+.gitignore
+.gitattributes
+.dockerignore
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

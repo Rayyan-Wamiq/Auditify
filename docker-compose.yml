@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auditify
+      POSTGRES_PASSWORD: auditify
+      POSTGRES_DB: auditify
+    ports:
+      - "5432:5432"
+    volumes:
+      - auditify_pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg2://auditify:auditify@db:5432/auditify
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      DEFAULT_GROQ_MODEL: ${DEFAULT_GROQ_MODEL:-openai/gpt-oss-120b}
+      CHROMA_PERSIST_DIR: /data/chroma_store
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - auditify_chroma_data:/data/chroma_store
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  auditify_pg_data:
+  auditify_chroma_data:

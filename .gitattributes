@@ -1,0 +1,30 @@
+# =============================================================================
+# Auditify - .gitattributes
+# Keeps line endings consistent across Windows/macOS/Linux contributors:
+# everything is stored as LF in the repository and checked out natively.
+# =============================================================================
+
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF to stay executable by cmd/PowerShell.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary assets - never diff, never touch line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.xlsx binary
+*.docx binary
+*.woff binary
+*.woff2 binary
+
+# Lockfiles are generated - keep them out of diffs to avoid noisy reviews.
+package-lock.json -diff linguist-generated
+yarn.lock -diff linguist-generated
+pnpm-lock.yaml -diff linguist-generated

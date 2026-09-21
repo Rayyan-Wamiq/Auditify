@@ -1,0 +1,1 @@
+"""Core infrastructure (configuration, database engine, shared plumbing)."""

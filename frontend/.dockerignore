@@ -1,0 +1,33 @@
+# -----------------------------------------------------------------------------
+# Auditify frontend - Docker build context exclusions
+# Docker does NOT read .gitignore, so local secrets must be listed here too.
+# -----------------------------------------------------------------------------
+
+# Secrets / local environment
+.env
+.env.local
+.env.*.local
+!.env.example
+*.pem
+
+# Dependencies and build output (reinstalled/rebuilt inside the image)
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.turbo/
+.vercel/
+
+# Local runtime logs
+*.log
+
+# VCS / editors / OS
+.git/
+.gitignore
+.gitattributes
+.dockerignore
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
